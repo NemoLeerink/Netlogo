@@ -18,6 +18,13 @@ to walk1
     forward 1
   ]
 
+  ask turtles [
+    create-temporary-plot-pen (word who)
+    set-plot-pen-color color
+    ;;plotxy xcor ticks
+
+    plotx count patches with [pcolor = [pcolor] of myself]
+  ]
   if not any? patches with [pcolor = black] [stop]
 
   tick
@@ -121,6 +128,23 @@ NIL
 17
 1
 11
+
+PLOT
+0
+313
+200
+463
+Plot
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
 
 @#$#@#$#@
 ## WHAT IS IT?
