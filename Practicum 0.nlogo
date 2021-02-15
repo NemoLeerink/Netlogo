@@ -1,15 +1,18 @@
 patches-own [visits]
 to setup
+
   clear-all
   ask patches [set visits 0]
   create-turtles 2 ;; creates two turtles
+
   [
     ask turtle 0 [set color orange]
     ask turtle 1 [set color blue]
     set size 3                          ;; make it easier to see
-    if ( [pcolor] of patch-ahead 1 != black)
-    [face min-one-of patches [visits] ;; naar tegel met minste visits
-      move-to one-of patches]
+
+    face one-of neighbors4 with [shade-of? pcolor [pcolor] of myself or pcolor = black]
+    move-to one-of patches
+
     ask turtle 0 [plot count patches with [pcolor = orange]]
     ask turtle 1 [plot count patches with [pcolor = blue]]
   ]
@@ -19,8 +22,9 @@ end
 
 to walk1
   ask turtles [
+    if ( [pcolor] of patch-ahead 1 != black)
+    [face min-one-of neighbors4 with [shade-of? pcolor [pcolor] of myself or pcolor = black] [visits]] ;; kijk naar de kant waar een tint van mijn kleur is en die het minst bezocht is
 
-     face one-of neighbors4            ;; face N, E, S, or W
     forward 1                           ;; advance one step
     set visits visits + 1
     set pcolor scale-color color (visits + 5)0 100 ;; kleur verandert afhankelijk van aantal visits
@@ -70,10 +74,10 @@ ticks
 30.0
 
 BUTTON
-63
-43
-130
-76
+64
+45
+131
+78
 NIL
 setup
 NIL
