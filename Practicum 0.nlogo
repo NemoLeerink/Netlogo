@@ -1,38 +1,48 @@
-patches-own [visits]
-to setup
-
+patches-own [visits eigenaar]
+to Setup
   clear-all
-  ask patches [set visits 0]
-  create-turtles 2 ;; creates two turtles
 
+  ask patches [
+    set visits 0
+    set eigenaar -1
+  ]
+
+  create-turtles Schildpadjes ;; creates turtles
   [
-    ask turtle 0 [set color orange]
-    ask turtle 1 [set color blue]
     set size 3                          ;; make it easier to see
 
-    face one-of neighbors4 with [shade-of? pcolor [pcolor] of myself or pcolor = black]
+    face one-of neighbors4
     move-to one-of patches
 
-    ask turtle 0 [plot count patches with [pcolor = orange]]
-    ask turtle 1 [plot count patches with [pcolor = blue]]
+    create-temporary-plot-pen (word "S" who)  ;; maak voor iedere turtle een plotpen
+    set-plot-pen-color color  ;; zet voor iedere turtle de plotpen kleur gelijk aan de turtle kleur
   ]
+
   reset-ticks
 
 end
 
-to walk1
+to Lopen!
   ask turtles [
+
     if ( [pcolor] of patch-ahead 1 != black)
-    [face min-one-of neighbors4 with [shade-of? pcolor [pcolor] of myself or pcolor = black] [visits]] ;; kijk naar de kant waar een tint van mijn kleur is en die het minst bezocht is
+    [face min-one-of neighbors4 with [eigenaar = [who] of myself or pcolor = black] [visits]] ;; kijk naar de kant waar een patch van mij is en/of het minst bezocht is
+    ;;[face min-one-of neighbors4 with [shade-of? pcolor [pcolor] of myself or pcolor = black] [visits]] ;; oude versie gebasserd op kleurtinten
 
     forward 1                           ;; advance one step
+
+    set eigenaar who
     set visits visits + 1
-    set pcolor scale-color color (visits + 5)0 100 ;; kleur verandert afhankelijk van aantal visits
-    ]
+
+    set pcolor scale-color color (visits * 3 + 5)0 100 ;; kleur verandert afhankelijk van aantal visits
+
+    set-current-plot-pen (word "S" who) ;; selecteer plotpen van de turtle
+    plot count patches with [eigenaar = [who] of myself] ;; plot het aantal patches waar de turtle eigenaar van is
+  ]
 
 
   if (not any? patches with [pcolor = black])
-  [ask max-one-of turtles [count patches] ;;winnaar heeft meeste tegels
+  [ask max-one-of turtles [count patches with [eigenaar = [who] of myself ]] ;;winnaar heeft meeste tegels
     [set size 6]                          ;;winnaar wordt groter
     stop                                  ;; als er geen zwarte tegels meer zijn: stop
   ]
@@ -47,10 +57,10 @@ end
 ; copyright and related or neighboring rights to this model.
 @#$#@#$#@
 GRAPHICS-WINDOW
-189
-10
-648
-470
+248
+29
+927
+709
 -1
 -1
 11.0
@@ -63,10 +73,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--20
-20
--20
-20
+-30
+30
+-30
+30
 1
 1
 1
@@ -79,7 +89,7 @@ BUTTON
 131
 78
 NIL
-setup
+Setup\n
 NIL
 1
 T
@@ -96,7 +106,7 @@ BUTTON
 142
 118
 NIL
-walk1
+Lopen!
 T
 1
 T
@@ -108,11 +118,11 @@ NIL
 0
 
 PLOT
-14
-146
-214
-296
-plot 1
+18
+220
+218
+370
+Plot
 NIL
 NIL
 0.0
@@ -120,28 +130,24 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -955883 true "ask turtle 0 [plot count patches with [pcolor = orange]]" "ask turtle 0 [plot count patches with [pcolor = orange]]"
 
-PLOT
-698
-209
-898
-359
-plot 2
+SLIDER
+21
+142
+193
+175
+Schildpadjes
+Schildpadjes
+0
+100
+9.0
+1
+1
 NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -13345367 true "" "plot count turtle 1"
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
