@@ -29,7 +29,7 @@ end
 to Lopen
   ask turtles [
 
-    set pcolor item state colours
+    set pcolor  colours
 
     ifelse (state < length Gedrag)
     [set state state + 1] ;; het vakje is bezocht
