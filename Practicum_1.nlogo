@@ -1,22 +1,52 @@
 patches-own [state]
-globals [ colours ...]
+globals [ colours ... instruction-tabel] ;;
 extensions [ table ]
 
 to Setup
 
   clear-all
-  ;;set Gedrag table:get instruction-table my-choice
+
+  set instruction-tabel table:from-list [
+    ["Langton's ant" "RL"]
+    ["Still chaos after 1.000.000 steps" "RLR"]
+    ["Immediately a simple highway" "LLR"]
+    ["A straight highway to the right" "RRLLLRRRLRRR"]
+    ["A broad highway, 45 degrees" "RRLRLLRLRR"]
+    ["568.000 steps before highway emerges" "LLLLLLRRLRRR"]
+    ["A highway that is not a multiple of 45 degrees" "RLRLRLLRLR"]
+    ["A curvy highway to the left" "LLRRRLRLRLLR"]
+    ["Some way to fill a sector" "RRLRLRR"]
+    ["Some other way to fill a sector" "RRLLLRLLLRRR"]
+    ["White upper cone filler" "RRLLLRRRRRLR"]
+    ["Left lower plane filler" "RRLRLLRRRRRR"]
+    ["Some way to fill the whole plane" "RRLRR"]
+    ["Fill the whole plane, connect with highways" "LRRRRRLLR"]
+    ["Fill the whole plane, with spiraling highway" "LRRRRLLLRRR"]
+    ["Your brain (from above)" "LLRR"]
+    ["Your brain (from above), connected to an IC" "RLLR"]
+    ["Professor's brain (from above)" "LLLLLLRRRRRR"]
+    ["Professor's brain connected to an IC" "RRRLLLLLLRRR"]
+    ["Complicated construction" "RRRRLRRRLLRR"]
+    ["Biffled highway" "RLLLLRRRLLLR"]
+    ["Overheating reactor" "RRLRLLLRRRR"]
+    ["Extending square domain" "LLRLLLRRRRR"]
+    ["Persian carpet" "LRLRLLLLLLLR"]
+    ["Other carpet (skew)" "LLRRLRRRRRRR"]
+  ]
+
   set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
   ask patches [ set state 0 set pcolor gray ]
+
+  ifelse (length Gedrag > 0)
+    [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]]
+    [set Gedrag table:get instruction-tabel kiezer ] ;; Gedrag wordt gelijk aan element uit de lijst
 
   create-turtles 1 ;; creates ant
   [
     set size 3                          ;; make it easier to see
-
     set shape "bug"
     set heading 0
     set color black
-    move-to one-of patches
 
     ;;create-temporary-plot-pen (word "s" who)  ;; maak voor iedere turtle een plotpen
     ;;set-plot-pen-color color  ;; zet voor iedere turtle de plotpen kleur gelijk aan de turtle kleur
@@ -27,15 +57,25 @@ to Setup
 end
 
 to Lopen
+
+  if any? turtles with [ patch-ahead 1 = nobody ] [set Gedrag "" stop]
+
   ask turtles [
 
-    set pcolor item state colours
+    ;;carefully [move-to patch-ahead 1] [stop]
 
-    ifelse (state < length Gedrag)
+    move-to patch-ahead 1
+
+    ifelse (state < length Gedrag - 1) ;; Lenght geeft aantal karakters terug, maar state rekend vanaf 0
     [set state state + 1] ;; het vakje is bezocht
     [set state 0]
 
-    move-to patch-ahead 1
+    ifelse (item state Gedrag = "R")
+    [set heading heading + 90]
+    [set heading heading - 90]
+
+    set pcolor item state colours
+
   ]
 
   tick
@@ -44,11 +84,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-647
-448
+700
+501
 -1
 -1
-13.0
+2.0
 1
 10
 1
@@ -58,10 +98,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--16
-16
--16
-16
+-120
+120
+-120
+120
 0
 0
 1
@@ -80,7 +120,7 @@ NIL
 T
 OBSERVER
 NIL
-NIL
+X
 NIL
 NIL
 1
@@ -91,7 +131,7 @@ INPUTBOX
 174
 165
 Gedrag
-RL
+NIL
 1
 0
 String
@@ -103,25 +143,42 @@ BUTTON
 233
 Lopen
 Lopen\n
+T
+1
+T
+OBSERVER
+NIL
+L
+NIL
+NIL
+0
+
+BUTTON
+59
+200
+122
+233
+Stap
+Lopen
 NIL
 1
 T
 OBSERVER
 NIL
-NIL
+S
 NIL
 NIL
 1
 
 CHOOSER
-29
-260
-208
-305
-instruction-table
-instruction-table
-["Langton's ant" "RL"] ["Still chaos after 1.000.000 steps" "RLR"] ["Immediately a simple highway" "LLR"] ["A straight highway to the right" "RRLLLRRRLRRR"] ["A broad highway, 45 degrees" "RRLRLLRLRR"] ["568.000 steps before highway emerges" "LLLLLLRRLRRR"] ["A highway that is not a multiple of 45 degrees" "RLRLRLLRLR"] ["A curvy highway to the left" "LLRRRLRLRLLR"] ["Some way to fill a sector" "RRLRLRR"] ["Some other way to fill a sector" "RRLLLRLLLRRR"] ["White upper cone filler" "RRLLLRRRRRLR"] ["Left lower plane filler" "RRLRLLRRRRRR"] ["Some way to fill the whole plane" "RRLRR"] ["Fill the whole plane, connect with highways" "LRRRRRLLR"] ["Fill the whole plane, with spiraling highway" "LRRRRLLLRRR"] ["Your brain (from above)" "LLRR"] ["Your brain (from above), connected to an IC" "RLLR"] ["Professor's brain (from above)" "LLLLLLRRRRRR"] ["Professor's brain connected to an IC" "RRRLLLLLLRRR"] ["Complicated construction" "RRRRLRRRLLRR"] ["Biffled highway" "RLLLLRRRLLLR"] ["Overheating reactor" "RRLRLLLRRRR"] ["Extending square domain" "LLRLLLRRRRR"] ["Persian carpet" "LRLRLLLLLLLR"] ["Other carpet (skew)" "LLRRLRRRRRRR"]
-5
+21
+252
+195
+297
+Kiezer
+Kiezer
+"Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
+22
 
 @#$#@#$#@
 ## WHAT IS IT?
