@@ -1,5 +1,5 @@
 patches-own [state]
-globals [ colours ... instruction-tabel] ;;
+globals [ colours ... instruction-tabel input] ;;
 extensions [ table ]
 
 to Setup
@@ -54,11 +54,12 @@ to Setup
 
   reset-ticks
 
+
 end
 
 to Lopen
 
-  if any? turtles with [ patch-ahead 1 = nobody ] [set Gedrag "" stop]
+  if any? turtles with [ patch-ahead 1 = nobody ] [stop]
 
   ask turtles [
 
@@ -66,25 +67,34 @@ to Lopen
 
     move-to patch-ahead 1
 
-    ifelse (state < length Gedrag - 1) ;; Lenght geeft aantal karakters terug, maar state rekend vanaf 0
-    [set state state + 1] ;; het vakje is bezocht
-    [set state 0]
-
     ifelse (item state Gedrag = "R")
     [set heading heading + 90]
     [set heading heading - 90]
 
     set pcolor item state colours
 
+    ifelse (state < length Gedrag - 1) ;; Lenght geeft aantal karakters terug, maar state rekend vanaf 0
+    [set state state + 1] ;; het vakje is bezocht
+    [set state 0]
+
   ]
 
   tick
 end
+
+to Willekeurig
+  let random-length 2 + random 10
+  set Gedrag reduce word n-values random-length [ one-of ["L" "R"] ] ;; Zet gedrag gelijk aan een string van L en R. Reduce word maakt van de lijst met R en L een string
+end
+
+to Leeg
+  set Gedrag ""
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+225
 10
-700
+715
 501
 -1
 -1
@@ -109,10 +119,10 @@ ticks
 30.0
 
 BUTTON
-110
-59
-174
-92
+10
+10
+74
+43
 Setup
 Setup\n
 NIL
@@ -126,21 +136,21 @@ NIL
 1
 
 INPUTBOX
-61
-103
-174
-165
+10
+105
+123
+175
 Gedrag
-NIL
+LRLRLLLLLLLR
 1
 0
 String
 
 BUTTON
-129
-200
-194
-233
+150
+10
+215
+43
 Lopen
 Lopen\n
 T
@@ -154,10 +164,10 @@ NIL
 0
 
 BUTTON
-59
-200
-122
-233
+80
+10
+143
+43
 Stap
 Lopen
 NIL
@@ -171,14 +181,58 @@ NIL
 1
 
 CHOOSER
-21
-252
+10
 195
-297
+184
+240
 Kiezer
 Kiezer
 "Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
-22
+23
+
+BUTTON
+130
+145
+220
+178
+Willekeurig
+Willekeurig
+NIL
+1
+T
+OBSERVER
+NIL
+R
+NIL
+NIL
+1
+
+TEXTBOX
+10
+70
+115
+98
+Laat leeg om de kiezer te gebruiken.
+11
+0.0
+1
+
+BUTTON
+130
+105
+220
+138
+Leeg
+Leeg
+NIL
+1
+T
+OBSERVER
+NIL
+L
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -539,5 +593,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@
