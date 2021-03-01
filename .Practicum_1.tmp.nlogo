@@ -37,6 +37,7 @@ to Setup
   set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
   ask patches [ set state 0 set pcolor gray ] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
   ask patches [ set visits 0]
+  ask turtltes [ask patches in-radius radius [set state staat]]
 
    if any? turtles with [ patch-ahead 1 = nobody ]
   [ask turtles
@@ -61,17 +62,14 @@ to Setup
 
 
 end
-to kleuren
+
+to kleuren ;; geeft kleur aan de patches nav. het aantal keren dat de ant er geweest is
 
    if any? turtles with [ patch-ahead 1 = nobody ]
    [ask patches[
     ifelse (visits = 0)
     [set pcolor sky]
     [set pcolor scale-color red visits 0 50 ]]]
-
-    ;;[ifelse not (ask turtles state = 0)
-      ;;[ask patches [ set pcolor scale-color red visits 0 50 ]
-
 end
 
 to Lopen
@@ -160,7 +158,7 @@ INPUTBOX
 123
 175
 Gedrag
-RLLLLRRRLLLR
+LRLRLLLLLLLR
 1
 0
 String
@@ -207,7 +205,7 @@ CHOOSER
 Kiezer
 Kiezer
 "Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
-20
+23
 
 BUTTON
 130
@@ -252,6 +250,36 @@ L
 NIL
 NIL
 1
+
+SLIDER
+10
+255
+182
+288
+radius
+radius
+0
+100
+47.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+305
+182
+338
+staat
+staat
+2
+12
+5.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
