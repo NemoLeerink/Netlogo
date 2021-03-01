@@ -1,4 +1,4 @@
-patches-own [state]
+patches-own [state visits]
 globals [ colours ... instruction-tabel input] ;;
 extensions [ table ]
 
@@ -35,35 +35,47 @@ to Setup
   ]
 
   set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
-  ask patches [ set state 0 set pcolor gray ]
+  ask patches [ set state 0 set pcolor gray ] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
+  ask patches [ set visits 0]
+
+   if any? turtles with [ patch-ahead 1 = nobody ]
+  [ask turtles
+    [ifelse not (state = 0)
+      [ask patches [ set pcolor scale-color red visits 0 50 ]]
+      [ask patches [set pcolor sky]]]]
 
   ifelse (length Gedrag > 0)
-    [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]]
+    [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]] ;;geeft error als de gebruiker te veel of te weinig karakters invoert
     [set Gedrag table:get instruction-tabel kiezer ] ;; Gedrag wordt gelijk aan element uit de lijst
 
-  create-turtles 1 ;; creates ant
+  create-turtles 1 ;; creates turtle
   [
-    set size 3                          ;; make it easier to see
-    set shape "bug"
-    set heading 0
+    set size 3  ;; make it easier to see
+    set shape "bug" ;; maakt dat de turtle er uit ziet als een mier
+    set heading 0 ;; kijkt naar het noorden
     set color black
 
-    ;;create-temporary-plot-pen (word "s" who)  ;; maak voor iedere turtle een plotpen
-    ;;set-plot-pen-color color  ;; zet voor iedere turtle de plotpen kleur gelijk aan de turtle kleur
   ]
 
   reset-ticks
 
 
 end
+to kleuren
+
+   if any? turtles with [ patch-ahead 1 = nobody ]
+   [ask patches[
+    ifelse (visits = 0)
+    [set pcolor sky]
+    [set pcolor scale-color red visits 0 50 ]]]
+end
 
 to Lopen
 
-  if any? turtles with [ patch-ahead 1 = nobody ] [stop]
+  if any? turtles with [ patch-ahead 1 = nobody ] [kleuren]
+
 
   ask turtles [
-
-    ;;carefully [move-to patch-ahead 1] [stop]
 
     move-to patch-ahead 1
 
@@ -76,10 +88,13 @@ to Lopen
     ifelse (state < length Gedrag - 1) ;; Lenght geeft aantal karakters terug, maar state rekend vanaf 0
     [set state state + 1] ;; het vakje is bezocht
     [set state 0]
+    set visits visits + 1 ;; het vakje is bezocht
+
 
   ]
 
   tick
+
 end
 
 to Willekeurig
@@ -88,7 +103,7 @@ to Willekeurig
 end
 
 to Leeg
-  set Gedrag ""
+  set Gedrag "" ;; reset invoer gedrag
 end
 @#$#@#$#@
 GRAPHICS-WINDOW

@@ -1,257 +1,32 @@
-patches-own [state visits]
-globals [ colours ... instruction-tabel input] ;;
-extensions [ table ]
-
-to Setup
-
-  clear-all
-
-  set instruction-tabel table:from-list [
-    ["Langton's ant" "RL"]
-    ["Still chaos after 1.000.000 steps" "RLR"]
-    ["Immediately a simple highway" "LLR"]
-    ["A straight highway to the right" "RRLLLRRRLRRR"]
-    ["A broad highway, 45 degrees" "RRLRLLRLRR"]
-    ["568.000 steps before highway emerges" "LLLLLLRRLRRR"]
-    ["A highway that is not a multiple of 45 degrees" "RLRLRLLRLR"]
-    ["A curvy highway to the left" "LLRRRLRLRLLR"]
-    ["Some way to fill a sector" "RRLRLRR"]
-    ["Some other way to fill a sector" "RRLLLRLLLRRR"]
-    ["White upper cone filler" "RRLLLRRRRRLR"]
-    ["Left lower plane filler" "RRLRLLRRRRRR"]
-    ["Some way to fill the whole plane" "RRLRR"]
-    ["Fill the whole plane, connect with highways" "LRRRRRLLR"]
-    ["Fill the whole plane, with spiraling highway" "LRRRRLLLRRR"]
-    ["Your brain (from above)" "LLRR"]
-    ["Your brain (from above), connected to an IC" "RLLR"]
-    ["Professor's brain (from above)" "LLLLLLRRRRRR"]
-    ["Professor's brain connected to an IC" "RRRLLLLLLRRR"]
-    ["Complicated construction" "RRRRLRRRLLRR"]
-    ["Biffled highway" "RLLLLRRRLLLR"]
-    ["Overheating reactor" "RRLRLLLRRRR"]
-    ["Extending square domain" "LLRLLLRRRRR"]
-    ["Persian carpet" "LRLRLLLLLLLR"]
-    ["Other carpet (skew)" "LLRRLRRRRRRR"]
-  ]
-
-  set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
-  ask patches [ set state 0 set pcolor gray ] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
-  ask patches [ set visits 0]
-
-   if any? turtles with [ patch-ahead 1 = nobody ]
-  [ask turtles
-    [ifelse not (state = 0)
-      [ask patches [ set pcolor scale-color red visits 0 50 ]]
-      [ask patches [set pcolor sky]]]]
-
-  ifelse (length Gedrag > 0)
-    [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]] ;;geeft error als de gebruiker te veel of te weinig karakters invoert
-    [set Gedrag table:get instruction-tabel kiezer ] ;; Gedrag wordt gelijk aan element uit de lijst
-
-  create-turtles 1 ;; creates turtle
-  [
-    set size 3  ;; make it easier to see
-    set shape "bug" ;; maakt dat de turtle er uit ziet als een mier
-    set heading 0 ;; kijkt naar het noorden
-    set color black
-
-  ]
-
-  reset-ticks
-
-
-end
-to kleuren
-
-   if any? turtles with [ patch-ahead 1 = nobody ]
-   [ask patches[
-    ifelse (visits = 0)
-    [set pcolor sky]
-    [set pcolor scale-color red visits 0 50 ]]]
-
-    ;;[ifelse not (ask turtles state = 0)
-      ;;[ask patches [ set pcolor scale-color red visits 0 50 ]
-
-end
-
-to Lopen
-
-  if any? turtles with [ patch-ahead 1 = nobody ] [kleuren]
-
-
-  ask turtles [
-
-    move-to patch-ahead 1
-
-    ifelse (item state Gedrag = "R")
-    [set heading heading + 90]
-    [set heading heading - 90]
-
-    set pcolor item state colours
-
-    ifelse (state < length Gedrag - 1) ;; Lenght geeft aantal karakters terug, maar state rekend vanaf 0
-    [set state state + 1] ;; het vakje is bezocht
-    [set state 0]
-    set visits visits + 1 ;; het vakje is bezocht
-
-
-  ]
-
-  tick
-
-end
-
-to Willekeurig
-  let random-length 2 + random 10
-  set Gedrag reduce word n-values random-length [ one-of ["L" "R"] ] ;; Zet gedrag gelijk aan een string van L en R. Reduce word maakt van de lijst met R en L een string
-end
-
-to Leeg
-  set Gedrag "" ;; reset invoer gedrag
-end
+set up
+ask patches [ set state 0 set pcolor gray ]
 @#$#@#$#@
 GRAPHICS-WINDOW
-225
+210
 10
-715
-501
+647
+448
 -1
 -1
-2.0
+13.0
 1
 10
 1
 1
 1
 0
-0
-0
 1
--120
-120
--120
-120
+1
+1
+-16
+16
+-16
+16
 0
 0
 1
 ticks
 30.0
-
-BUTTON
-10
-10
-74
-43
-Setup
-Setup\n
-NIL
-1
-T
-OBSERVER
-NIL
-X
-NIL
-NIL
-1
-
-INPUTBOX
-10
-105
-123
-175
-Gedrag
-RLLLLRRRLLLR
-1
-0
-String
-
-BUTTON
-150
-10
-215
-43
-Lopen
-Lopen\n
-T
-1
-T
-OBSERVER
-NIL
-L
-NIL
-NIL
-0
-
-BUTTON
-80
-10
-143
-43
-Stap
-Lopen
-NIL
-1
-T
-OBSERVER
-NIL
-S
-NIL
-NIL
-1
-
-CHOOSER
-10
-195
-184
-240
-Kiezer
-Kiezer
-"Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
-20
-
-BUTTON
-130
-145
-220
-178
-Willekeurig
-Willekeurig
-NIL
-1
-T
-OBSERVER
-NIL
-R
-NIL
-NIL
-1
-
-TEXTBOX
-10
-70
-115
-98
-Laat leeg om de kiezer te gebruiken.
-11
-0.0
-1
-
-BUTTON
-130
-105
-220
-138
-Leeg
-Leeg
-NIL
-1
-T
-OBSERVER
-NIL
-L
-NIL
-NIL
-1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -612,5 +387,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-1
+0
 @#$#@#$#@
