@@ -50,7 +50,9 @@ to Setup
     set color black
   ]
 
-  ask patch 0 0 [ask patches in-radius radius [set rand random-float 1 if (rand < Kans) [set state staat - 1]]] ; Vraag aan centrale patch om in een radius de state te veranderen als de kans groter is dan een wilekeurige float
+  ask patch 0 0 [ask patches in-radius radius [
+    set rand random-float 1 if (rand < Kans) [set state staat - 1 set pcolor item state colours]]
+  ] ; Vraag aan centrale patch om in een radius de state te veranderen als de kans groter is dan een wilekeurige float
   reset-ticks
 
 
@@ -147,7 +149,7 @@ INPUTBOX
 123
 175
 Gedrag
-LLRR
+RRLRLRR
 1
 0
 String
@@ -249,7 +251,7 @@ Radius
 Radius
 0
 100
-78.0
+32.0
 1
 1
 NIL
@@ -264,7 +266,7 @@ Staat
 Staat
 1
 length Gedrag
-4.0
+6.0
 1
 1
 NIL
@@ -279,7 +281,7 @@ Kans
 Kans
 0
 1
-0.48
+0.22
 0.01
 1
 NIL
