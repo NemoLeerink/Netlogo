@@ -1,5 +1,5 @@
 patches-own [state visits]
-globals [ colours ... instruction-tabel input] ;;
+globals [ colours ... instruction-tabel input rand] ;;
 extensions [ table ]
 
 to Setup
@@ -35,15 +35,8 @@ to Setup
   ]
 
   set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
-  ask patches [ set state 0 set pcolor gray ] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
-  ask patches [ set visits 0]
-  ask turtles [ask patches in-radius radius [set state staat]]
 
-   if any? turtles with [ patch-ahead 1 = nobody ]
-  [ask turtles
-    [ifelse not (state = 0)
-      [ask patches [ set pcolor scale-color red visits 0 50 ]]
-      [ask patches [set pcolor sky]]]]
+  ask patches [ set state 0 set pcolor gray set visits 0] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
 
   ifelse (length Gedrag > 0)
     [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]] ;;geeft error als de gebruiker te veel of te weinig karakters invoert
@@ -55,27 +48,24 @@ to Setup
     set shape "bug" ;; maakt dat de turtle er uit ziet als een mier
     set heading 0 ;; kijkt naar het noorden
     set color black
-
   ]
 
+  ask patch 0 0 [ask patches in-radius radius [set rand random-float 1 if (rand < Kans) [set state staat - 1]]] ; Vraag aan centrale patch om in een radius de state te veranderen als de kans groter is dan een wilekeurige float
   reset-ticks
 
 
 end
 
 to kleuren ;; geeft kleur aan de patches nav. het aantal keren dat de ant er geweest is
-
-   if any? turtles with [ patch-ahead 1 = nobody ]
-   [ask patches[
+  ask patches[
     ifelse (visits = 0)
     [set pcolor sky]
-    [set pcolor scale-color red visits 0 50 ]]]
+    [set pcolor scale-color red visits 0 50 ]]
 end
 
 to Lopen
 
-  if any? turtles with [ patch-ahead 1 = nobody ] [kleuren]
-
+  if any? turtles with [ patch-ahead 1 = nobody ] [if (Heatmap) [kleuren] stop]
 
   ask turtles [
 
@@ -91,7 +81,6 @@ to Lopen
     [set state state + 1] ;; het vakje is bezocht
     [set state 0]
     set visits visits + 1 ;; het vakje is bezocht
-
 
   ]
 
@@ -158,7 +147,7 @@ INPUTBOX
 123
 175
 Gedrag
-LRLRLLLLLLLR
+LLRR
 1
 0
 String
@@ -205,7 +194,7 @@ CHOOSER
 Kiezer
 Kiezer
 "Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
-23
+15
 
 BUTTON
 130
@@ -256,11 +245,11 @@ SLIDER
 255
 182
 288
-radius
-radius
+Radius
+Radius
 0
 100
-67.0
+78.0
 1
 1
 NIL
@@ -271,15 +260,41 @@ SLIDER
 305
 182
 338
-staat
-staat
-2
-12
-8.0
+Staat
+Staat
+1
+length Gedrag
+4.0
 1
 1
 NIL
 HORIZONTAL
+
+SLIDER
+10
+355
+182
+388
+Kans
+Kans
+0
+1
+0.48
+0.01
+1
+NIL
+HORIZONTAL
+
+SWITCH
+80
+405
+182
+438
+Heatmap
+Heatmap
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
