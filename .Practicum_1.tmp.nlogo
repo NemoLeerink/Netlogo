@@ -74,8 +74,8 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading hHoek-R]
-    [set heading Hoek-L]
+    [set heading heading + Hoek-R]
+    [set heading heading + Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn
 
@@ -149,7 +149,7 @@ INPUTBOX
 123
 175
 Gedrag
-RL
+LLRRRLRLRLLR
 1
 0
 String
@@ -307,7 +307,7 @@ Hoek-L
 Hoek-L
 -360
 360
--90.0
+45.0
 45
 1
 NIL
@@ -343,6 +343,7 @@ Ook is het voor de gebruiker mogelijk om de patches al andere startwaardes te ge
 
 Verder kan de gebruiker de heatmap aanzetten, wat er voor zorgt dat zodra de ant gestopt is (oftewel hij bij een rand gekomen is) alle patches een roodtint krijgen gebaseerd op het aantal keren dat de ant er geweest is. Als de ant er niet geweest is wordt de patch blauw.
 
+Daarbij kan ook de hoek waarin de mier loopt aangepast worden, voor zowel het commando L als het commando R. Ook dit maakt dat de mier weer ander gedrag vertoond en er een ander patroon onstaat. Wil de je gebruik maken van de standaard figuren die beschikbaar zijn, dan moet je de slider laten staan i
 
 
 @#$#@#$#@
