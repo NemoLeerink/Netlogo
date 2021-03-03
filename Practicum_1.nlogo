@@ -74,8 +74,8 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading Hoek-R]
-    [set heading Hoek-L]
+    [set heading heading + Hoek-R]
+    [set heading heading + Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn
 
@@ -149,7 +149,7 @@ INPUTBOX
 123
 175
 Gedrag
-RL
+LLRRRLRLRLLR
 1
 0
 String
@@ -307,7 +307,7 @@ Hoek-L
 Hoek-L
 -360
 360
--90.0
+45.0
 45
 1
 NIL
