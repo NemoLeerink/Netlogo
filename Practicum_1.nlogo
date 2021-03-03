@@ -35,8 +35,15 @@ to Setup
   ]
 
   set colours [ white red lime cyan yellow 126 3 brown 52 blue 43 124 ]
+<<<<<<< Updated upstream
 
   ask patches [ set state 0 set pcolor gray set visits 0] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
+=======
+  ask patches [ set state 0 set pcolor gray ] ;; kleur van de patches is in het begin grijs, oftewel onbezocht
+  ask patches [ set visits 0] ;; zet aantal keer dat de ant er geweest is op nul
+  ask turtles [ask patches in-radius radius [set state staat]] ;; hierdoor wordt de door de gebruiker aangegeven staat aan de tegels rond aangegeven radius aangepast
+
+>>>>>>> Stashed changes
 
   ifelse (length Gedrag > 0)
     [if not (2 <= length Gedrag and length Gedrag <= 12) [error "Invalid input"]] ;;geeft error als de gebruiker te veel of te weinig karakters invoert
@@ -47,7 +54,12 @@ to Setup
     set size 3  ;; make it easier to see
     set shape "bug" ;; maakt dat de turtle er uit ziet als een mier
     set heading 0 ;; kijkt naar het noorden
+<<<<<<< Updated upstream
     set color black
+=======
+    set color black ;; krijgt kleur zwart
+
+>>>>>>> Stashed changes
   ]
 
   ask patch 0 0 [ask patches in-radius radius [
@@ -59,10 +71,19 @@ to Setup
 end
 
 to kleuren ;; geeft kleur aan de patches nav. het aantal keren dat de ant er geweest is
+<<<<<<< Updated upstream
   ask patches[
     ifelse (visits = 0)
     [set pcolor sky]
     [set pcolor scale-color red visits 0 50 ]]
+=======
+
+   if any? turtles with [ patch-ahead 1 = nobody ] ;; als turlte aan de rand is
+   [ask patches[
+    ifelse (visits = 0)
+    [set pcolor sky] ;; blauw als de patch geen visits heeft
+    [set pcolor scale-color red visits 0 50 ]]] ;; roodtint voor de patch gebaseerd op aantal visits
+>>>>>>> Stashed changes
 end
 
 to Lopen
@@ -251,7 +272,11 @@ Radius
 Radius
 0
 100
+<<<<<<< Updated upstream
 32.0
+=======
+44.0
+>>>>>>> Stashed changes
 1
 1
 NIL
@@ -262,6 +287,7 @@ SLIDER
 305
 182
 338
+<<<<<<< Updated upstream
 Staat
 Staat
 1
@@ -280,6 +306,13 @@ SLIDER
 Kans
 Kans
 0
+=======
+staat
+staat
+2
+12
+6.0
+>>>>>>> Stashed changes
 1
 0.22
 0.01
