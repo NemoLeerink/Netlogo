@@ -74,8 +74,8 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading heading + 90]
-    [set heading heading - 90]
+    [set heading heading Hoek-R]
+    [set heading heading Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn
 
@@ -297,6 +297,36 @@ Heatmap
 0
 1
 -1000
+
+SLIDER
+15
+445
+187
+478
+Hoek-L
+Hoek-L
+-360
+360
+45.0
+45
+1
+NIL
+HORIZONTAL
+
+SLIDER
+15
+485
+187
+518
+Hoek-R
+Hoek-R
+-360
+360
+-90.0
+45
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?

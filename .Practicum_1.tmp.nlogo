@@ -74,8 +74,8 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading heading + 90]
-    [set heading heading - 90]
+    [set heading heading Hoek-R]
+    [set heading heading Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn
 
@@ -298,6 +298,36 @@ Heatmap
 1
 -1000
 
+SLIDER
+15
+445
+187
+478
+Hoek-L
+Hoek-L
+-360
+360
+45.0
+45
+1
+NIL
+HORIZONTAL
+
+SLIDER
+15
+485
+187
+518
+Hoek-R
+Hoek-R
+-360
+360
+-90.0
+45
+1
+NIL
+HORIZONTAL
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -311,7 +341,7 @@ Door in commando's in te geven in de vorm van R of L vertoont de ant bepaald ged
 
 Ook is het voor de gebruiker mogelijk om de patches al andere startwaardes te geven dan 0. Dit in een ook door de gebruiker aan te passen radius. Hierdoor vertoont de ant weer heel ander gedrag. De kans geeft aan hoe groot de kans is dat een startwaarde niet gelijk is aan 0.
 
-Verder kan de gebruiker de heatmap aanzetten, wat er voor zorgt dat zodra de ant gestopt is (oftewel hij bij een rand gekomen is) alle patches een roodtint krijgen gebas
+Verder kan de gebruiker de heatmap aanzetten, wat er voor zorgt dat zodra de ant gestopt is (oftewel hij bij een rand gekomen is) alle patches een roodtint krijgen gebaseerd op het aantal keren dat de ant er geweest is. Als de ant er niet geweest is wordt de patch blauw.
 
 
 
