@@ -311,7 +311,7 @@ Door in commando's in te geven in de vorm van R of L vertoont de ant bepaald ged
 
 Ook is het voor de gebruiker mogelijk om de patches al andere startwaardes te geven dan 0. Dit in een ook door de gebruiker aan te passen radius. Hierdoor vertoont de ant weer heel ander gedrag. De kans geeft aan hoe groot de kans is dat een startwaarde niet gelijk is aan 0.
 
-Verder kan de gebruiker de heatmap aanzetten, wat er voor zorgt dat zodra de ant gestopt is (oftewel hij bij een rand gekomen is) alle patches een roodtint krijgen gebaseerd op het aantal keren dat de ant er geweest is. Als de ant er niet geweest is wordt de patch blauw.
+Verder kan de gebruiker de heatmap aanzetten, wat er voor zorgt dat zodra de ant gestopt is (oftewel hij bij een rand gekomen is) alle patches een roodtint krijgen gebas
 
 
 
