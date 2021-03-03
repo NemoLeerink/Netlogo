@@ -74,7 +74,7 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading heading Hoek-R]
+    [set heading headin Hoek-R]
     [set heading heading Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn

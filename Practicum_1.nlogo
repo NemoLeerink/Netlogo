@@ -74,8 +74,8 @@ to Lopen
     move-to patch-ahead 1
 
     ifelse (item state Gedrag = "R") ;; als er een R staat naar rechts anders links
-    [set heading heading Hoek-R]
-    [set heading heading Hoek-L]
+    [set heading Hoek-R]
+    [set heading Hoek-L]
 
     set pcolor item state colours ;; kleur patches naar aanleiding van de state waar ze in zijn
 
@@ -196,7 +196,7 @@ CHOOSER
 Kiezer
 Kiezer
 "Langton's ant" "Still chaos after 1.000.000 steps" "Immediately a simple highway" "A straight highway to the right" "A broad highway, 45 degrees" "568.000 steps before highway emerges" "A highway that is not a multiple of 45 degrees" "A curvy highway to the left" "Some way to fill a sector" "Some other way to fill a sector" "White upper cone filler" "Left lower plane filler" "Some way to fill the whole plane" "Fill the whole plane, connect with highways" "Fill the whole plane, with spiraling highway" "Your brain (from above)" "Your brain (from above), connected to an IC" "Professor's brain (from above)" "Professor's brain connected to an IC" "Complicated construction" "Biffled highway" "Overheating reactor" "Extending square domain" "Persian carpet" "Other carpet (skew)"
-15
+7
 
 BUTTON
 130
@@ -251,7 +251,7 @@ Radius
 Radius
 0
 100
-100.0
+0.0
 1
 1
 NIL
@@ -307,7 +307,7 @@ Hoek-L
 Hoek-L
 -360
 360
-45.0
+-90.0
 45
 1
 NIL
@@ -322,7 +322,7 @@ Hoek-R
 Hoek-R
 -360
 360
--90.0
+90.0
 45
 1
 NIL
